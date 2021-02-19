@@ -9,26 +9,26 @@ pipeline{
             stage('Git-Checkout')
             {
                 steps{
-                     git 'https://github.com/sravanin15/HelloworldMaven.git'
+                     git 'https://github.com/sravanin15/PipelineSonar.git'
                 }
             }
              stage('Validate')
         {
             steps{
-                bat 'mvn -f helloWorld/pom.xml validate'
+                bat 'mvn -f PipelineSonarqube validate'
             }
         }
         stage('Compile')
         {
             steps{
-                bat 'mvn -f  helloWorld/pom.xml compile'
+                bat 'mvn -f  PipelineSonarqube compile'
             }
         }
         stage('sonar analysis'){
             steps{
                 withSonarQubeEnv('sonarserver'){
                     withMaven(maven:'maven'){
-                        bat 'mvn -f  helloWorld/pom.xml sonar:sonar'
+                        bat 'mvn -f  PipelineSonarqube sonar:sonar'
                     }
                 }
             }
@@ -38,25 +38,25 @@ pipeline{
         stage('Test')
         {
             steps{
-                bat 'mvn -f  helloWorld/pom.xml test'
+                bat 'mvn -f  PipelineSonarqube test'
             }
         }
         stage('Package')
         {
             steps{
-                bat 'mvn -f  helloWorld/pom.xml package'
+                bat 'mvn -f  PipelineSonarqube package'
             }
         }
         stage('Verify')
         {
             steps{
-                bat 'mvn -f helloWorld/pom.xml verify'
+                bat 'mvn -f PipelineSonarqube verify'
             }
         }
         stage('Install')
         {
             steps{
-                bat 'mvn -f  helloWorld/pom.xml install'
+                bat 'mvn -f PipelineSonarqube install'
             }
         }
             
