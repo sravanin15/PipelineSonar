@@ -12,6 +12,12 @@ pipeline{
                      git 'https://github.com/sravanin15/PipelineSonar.git'
                 }
             }
+             stage('Clean')
+        {
+            steps{
+                bat 'mvn -f PipelineSonarqube clean'
+            }
+        }
              stage('Validate')
         {
             steps{
