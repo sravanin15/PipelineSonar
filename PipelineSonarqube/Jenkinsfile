@@ -1,0 +1,66 @@
+pipeline{
+    agent any
+   
+    tools { 
+        maven 'maven'
+        jdk 'jdk'
+    }
+        stages{
+            stage('Git-Checkout')
+            {
+                steps{
+                     git 'https://github.com/sravanin15/HelloworldMaven.git'
+                }
+            }
+             stage('Validate')
+        {
+            steps{
+                bat 'mvn -f helloWorld/pom.xml validate'
+            }
+        }
+        stage('Compile')
+        {
+            steps{
+                bat 'mvn -f  helloWorld/pom.xml compile'
+            }
+        }
+        stage('sonar analysis'){
+            steps{
+                withSonarQubeEnv('sonarserver'){
+                    withMaven(maven:'maven'){
+                        bat 'mvn -f  helloWorld/pom.xml sonar:sonar'
+                    }
+                }
+            }
+
+        }
+
+        stage('Test')
+        {
+            steps{
+                bat 'mvn -f  helloWorld/pom.xml test'
+            }
+        }
+        stage('Package')
+        {
+            steps{
+                bat 'mvn -f  helloWorld/pom.xml package'
+            }
+        }
+        stage('Verify')
+        {
+            steps{
+                bat 'mvn -f helloWorld/pom.xml verify'
+            }
+        }
+        stage('Install')
+        {
+            steps{
+                bat 'mvn -f  helloWorld/pom.xml install'
+            }
+        }
+            
+            
+           
+        }
+}
